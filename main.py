@@ -4,6 +4,7 @@ grid = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 #x = randint(10, 35)
 #y = randint(10, 35)
+# first commit
 
 x = 20
 y = 20
