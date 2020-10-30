@@ -1,12 +1,14 @@
 from random import randint
-from random import choice
 from os import system
 from time import sleep
 
 grid = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-x = randint(10, 35)
+x = randint(10, 35) # set x and y to 10 for AI to win quicker
 y = randint(10, 35)
+
+x = 10
+y = 10
 
 ships = {
     "A": 10,
@@ -19,9 +21,18 @@ ships = {
 gameBoard = []
 hiddenBoard = []
 missleAway = 00
-missleLeft = 50
+missleLeft = 50 
 score = 000
 move = ""
+
+# for AI
+alreadyHit = []
+lastSym = "X"
+lastCol = 0
+lastRow = 0
+foundShip = 0
+shipEnd = 0
+shipBegin = 0
 
 
 def initGame():
@@ -60,6 +71,8 @@ def loadShips(key):
 
 def updateData(coord):
     global lastSym
+    global lastCol
+    global lastRow
     global missleAway
     global missleLeft
     global move
@@ -98,7 +111,9 @@ def updateData(coord):
         move = "ALREADY HIT on " + grid[tempRow] + grid[tempCol]
         missleAway -= 1
         missleLeft += 1
-
+    lastSym = hiddenBoard[tempRow][tempCol]
+    lastCol = tempCol
+    lastRow = tempRow
 
 
 def checkMove():
@@ -123,12 +138,39 @@ def checkMove():
     else:
         return (-1)
 
-
 def AI():
-    aiCol = randint(0, x)
-    aiRow = randint(0, y)
+    global lastSym
+    global lastCol
+    global lastRow
+    global foundShip
+    global shipEnd
+    global shipBegin
+    global alreadyHit
+    
+    if(lastSym != "X"):
+      foundShip = 1
+      if(lastSym == "["):
+        shipEnd = 1
+      elif(lastSym == ">"):
+        shipBegin = 1
+      aiRow = lastRow
 
-    coordinate = str(grid[aiCol]) + str(grid[aiRow])
+    if(shipEnd == 1 and shipBegin == 1 and foundShip == 1):
+      foundShip = 0
+      shipEnd = 0
+      shipBegin = 0
+    
+    if(shipEnd == 0 and shipBegin == 0 and foundShip == 0):
+      aiCol = randint(0, x - 1)
+      aiRow = randint(0, y - 1)
+
+    if(shipEnd == 1 or foundShip == 1):
+      aiCol = lastCol + 1
+
+    if(shipBegin == 1):
+      aiCol = lastCol - 1
+
+    coordinate = str(grid[aiRow]) + str(grid[aiCol])
     tempCol = ""
     tempRow = ""
 
@@ -169,10 +211,11 @@ def playBattleship():
             elif (missleLeft == 0):
                 end = 1
                 print("YOU LOSE, RAN OUT OF MISSLES")
+        drawBoard()
     elif (playerNum == "0"):
         while (end == 0):
             drawBoard()
-            #sleep(1)
+            sleep(0.2) #put at 0.1 seconds, AI thinks slowly
             updateData(AI())
             system('clear')
             if (score == 160):
@@ -181,8 +224,9 @@ def playBattleship():
             elif (missleLeft == 0):
                 end = 1
                 print("COMPUTER LOSE, RAN OUT OF MISSLES")
+        drawBoard()
     else:
-        print("NOT A VALID OPTION, PLEASE RUN PROGRAM AGAIN!!!")
+        print("NOT A VALID OPTION!!!")
         playBattleship()
 
 
