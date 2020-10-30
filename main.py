@@ -25,7 +25,6 @@ missleAway = 00
 missleLeft = 50
 score = 000
 move = ""
-end = 0
 
 
 def initGame():
@@ -157,11 +156,10 @@ def AI():
 
 
 def playBattleship():
-    global end
     global missleLeft
     global missleAway
+    end = 0
     initGame()
-
     playerNum = input("How many players? (1 or 0): ")
     system('clear')
 
@@ -179,7 +177,7 @@ def playBattleship():
     elif (playerNum == "0"):
         while (end == 0):
             drawBoard()
-            sleep(0.25)
+            #sleep(1)
             updateData(AI())
             system('clear')
             if (score == 160):
