@@ -5,8 +5,11 @@ from time import sleep
 
 grid = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-x = randint(10, 35)
-y = randint(10, 35)
+#x = randint(10, 35)
+#y = randint(10, 35)
+
+x = 10
+y = 10
 
 ships = {
     "A": 10,
@@ -18,9 +21,6 @@ ships = {
 
 gameBoard = []
 hiddenBoard = []
-lastRow = 0
-lastCol = 0
-lastSym = ""
 missleAway = 00
 missleLeft = 50
 score = 000
@@ -65,13 +65,11 @@ def loadShips(key):
 
 
 def updateData(coord):
+    global lastSym
     global missleAway
     global missleLeft
-    global score
     global move
-    global lastCol
-    global lastRow
-    global lastSym
+    global score
 
     tempCoord = ""
 
@@ -96,19 +94,17 @@ def updateData(coord):
 
     if (hiddenBoard[tempRow][tempCol] == "~"):
         gameBoard[tempRow][tempCol] = "X"
+        hiddenBoard[tempRow][tempCol] = "X"
         move = "MISS on " + grid[tempRow] + grid[tempCol]
     elif (gameBoard[tempRow][tempCol] != hiddenBoard[tempRow][tempCol]):
         gameBoard[tempRow][tempCol] = hiddenBoard[tempRow][tempCol]
         move = "HIT on " + grid[tempRow] + grid[tempCol]
         score += 5
-    elif (gameBoard[tempRow][tempCol] == hiddenBoard[tempRow][tempCol]):
-        gameBoard[tempRow][tempCol] = hiddenBoard[tempRow][tempCol]
-        move = "REPEATED HIT on " + grid[tempRow] + grid[tempCol]
+    else:
+        move = "ALREADY HIT on " + grid[tempRow] + grid[tempCol]
         missleAway -= 1
         missleLeft += 1
-    lastCol = tempCol
-    lastRow = tempRow
-    lastSym = gameBoard[tempRow][tempCol]
+
 
 
 def checkMove():
@@ -135,26 +131,10 @@ def checkMove():
 
 
 def AI():
-    global move
-    global lastCol
-    global lastRow
-    global lastSym
+    aiCol = randint(0, x)
+    aiRow = randint(0, y)
 
-    randomCol = randint(0, x)
-    randomRow = randint(0, y)
-
-    if (move[:3] == "HIT"):
-        if (lastSym == "["):
-            randomCol = lastCol + 1
-            randomRow = lastRow
-        elif (lastSym == ">" or lastSym == "="):
-            randomCol = lastCol - 1
-            randomRow = lastRow
-        else:
-            randomCol = lastCol + choice([1, -1])
-            randomRow = lastRow
-
-    coordinate = grid[randomRow] + grid[randomCol]
+    coordinate = str(grid[aiCol]) + str(grid[aiRow])
     tempCol = ""
     tempRow = ""
 
