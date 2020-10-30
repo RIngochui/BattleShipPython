@@ -26,7 +26,6 @@ score = 000
 move = ""
 
 # for AI
-alreadyHit = []
 lastSym = "X"
 lastCol = 0
 lastRow = 0
@@ -145,7 +144,6 @@ def AI():
     global foundShip
     global shipEnd
     global shipBegin
-    global alreadyHit
     
     if(lastSym != "X"):
       foundShip = 1
