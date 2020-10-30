@@ -5,11 +5,8 @@ from time import sleep
 
 grid = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-#x = randint(10, 35)
-#y = randint(10, 35)
-
-x = 10
-y = 10
+x = randint(10, 35)
+y = randint(10, 35)
 
 ships = {
     "A": 10,
@@ -49,12 +46,10 @@ def drawBoard():
 def loadShips(key):
     tempCol = randint(0, x - ships[key])
     tempRow = randint(0, y - 1)
-    # print(tempRow, tempCol)
     while (hiddenBoard[tempRow][tempCol:tempCol + ships[key]] !=
            ["~"] * ships[key]):
         tempRow = randint(0, x - 1)
         tempCol = randint(0, y - ships[key])
-    # print(tempRow, tempCol, "*")
 
     hiddenBoard[tempRow][tempCol:tempCol + ships[key]] = key * ships[key]
     hiddenBoard[tempRow][tempCol] = "["
@@ -188,6 +183,7 @@ def playBattleship():
                 print("COMPUTER LOSE, RAN OUT OF MISSLES")
     else:
         print("NOT A VALID OPTION, PLEASE RUN PROGRAM AGAIN!!!")
+        playBattleship()
 
 
 playBattleship()
